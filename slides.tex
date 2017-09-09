@@ -1,0 +1,576 @@
+\documentclass{beamer}
+
+\usetheme{Boadilla}
+
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\usepackage{minted}
+\usepackage{tikz}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{tikzmark}
+
+\title{Simplicity in Composition}
+\author{Adelbert Chang}
+%\institute{Scala World 2017}
+\date{Scala World 2017}
+
+\logo{\includegraphics[height=1.5cm]{scalaworldlogo.jpg}}
+
+\def\code#1{\texttt{#1}}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+
+  \frametitle{Composition}
+  \Large
+
+  \begin{itemize}
+    \item $A$: type (set) of values \pause
+    \item $\oplus$: $A \times A \rightarrow A$ \pause
+    \item $1_{A}$: identity for $\oplus$ \pause
+  \end{itemize}
+
+  $$x \oplus (y \oplus z) = (x \oplus y) \oplus z$$
+  $$x = x \oplus 1_{A} = 1_{A} \oplus x$$
+
+\end{frame}
+
+\begin{frame} \LARGE $$(\mathbb{Z}, +, 0)$$ \end{frame}
+
+\begin{frame} \LARGE $$(\code{[a]}, +\!\!+, \code{[]})$$ \end{frame}
+
+\begin{frame} \LARGE $$(A \rightarrow A, \circ, a \mapsto a)$$ \end{frame}
+
+\begin{frame}[fragile]
+  \Large
+
+  \begin{minted}{scala}
+
+    trait Monoid[A] {
+      def combine(x: A, y: A): A
+      def empty: A
+    }
+
+  \end{minted}
+
+\end{frame}
+
+\tikzstyle{cell} = [rectangle, rounded corners=5pt, thick, draw, text width=0.65cm ]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Folding down list
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell] (n1) {1};
+    \foreach \i in {2,...,8}
+      \pgfmathtruncatemacro{\prev}{\i - 1}
+      \node [cell] (n\i) [right=of n\prev] {\i};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+    \node [cell, text width=1.8cm] (n2) {3};
+    \foreach \i in {3,...,8}
+      \pgfmathtruncatemacro{\prev}{\i - 1}
+      \node [cell] (n\i) [right=of n\prev] {\i};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell, text width=2.95cm] (n3) {6};
+    \foreach \i in {4,...,8}
+      \pgfmathtruncatemacro{\prev}{\i - 1}
+      \node [cell] (n\i) [right=of n\prev] {\i};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell, text width=5.95cm] (n5) {15};
+    \foreach \i in {6,...,8}
+      \pgfmathtruncatemacro{\prev}{\i - 1}
+      \node [cell] (n\i) [right=of n\prev] {\i};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell, text width=8.7cm] (n5) {36};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Parallel folding
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell] (n1) {1};
+    \foreach \i in {2,...,8}
+      \pgfmathtruncatemacro{\prev}{\i - 1}
+      \node [cell] (n\i) [right=of n\prev] {\i};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell, text width=1.8cm] (n1) {3};
+    \node [cell, text width=1.8cm] (n2) [right=of n1] {7};
+    \node [cell, text width=1.8cm] (n3) [right=of n2] {11};
+    \node [cell, text width=1.8cm] (n4) [right=of n3] {15};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell, text width=4.1cm] (n1) {10};
+    \node [cell, text width=4.1cm] (n2) [right=of n1] {26};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell, text width=8.7cm] (n1) {36};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Hierarchy
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \centering
+
+  \begin{tikzpicture}[
+    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
+  ]
+
+    \node [cell, text width=8.7cm] (n1) [above=of n2] {36};
+    \node [cell, text width=4.1cm] (n2) {10};
+    \node [cell, text width=4.1cm] (n3) [right=of n2] {26};
+
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\definecolor{darkred}{RGB}{181, 23, 0}
+\definecolor{darkblue}{RGB}{0,118,186}
+
+\begin{frame}
+  \centering
+  \LARGE
+
+  \textbf{Associative composition}
+  allows for \textcolor{darkred}{modular}
+  \textcolor{darkblue}{decomposition} and \textcolor{darkblue}{reasoning}.
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{0.38\textwidth}
+    \begin{minted}{scala}
+
+      A
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{0.42\textwidth}
+    \begin{minted}{scala}
+
+      F[A]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{0.85\textwidth}
+    \begin{minted}{scala}
+
+      (F[A], F[A]) => F[A]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{0.85\textwidth}
+    \begin{minted}{scala}
+
+      (F[A], F[B]) => F[?]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{1.0\textwidth}
+    \begin{minted}{scala}
+
+      (F[A], F[B]) => F[(A, B)]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \begin{minted}{scala}
+
+    def zipOption[A, B]
+      (oa: Option[A], ob: Option[B]): Option[(A, B)] =
+
+      (oa, ob) match {
+        case (Some(a), Some(b)) => Some((a, b))
+        case _                  => None
+      }
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \begin{minted}{scala}
+
+    def zipList[A, B]
+      (la: List[A], lb: List[B]): List[(A, B)] =
+
+      la match {
+        case Nil    => Nil
+        case h :: t => lb.map((h, _)) ++ zipList(t, f)
+      }
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \begin{minted}{scala}
+
+    def zipFunction[A, B, X]
+      (f: X => A, g: X => B): X => (A, B) =
+
+      (x: X) => (f(x), g(x))
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+  \Large
+
+  \begin{itemize}
+    \item $F(\rule{1ex}{.4pt})$: type of program \pause
+    \item $\otimes: F(A) \times F(B) \rightarrow F((A, B))$ \pause
+    \item $\eta: A \rightarrow F(A)$ \pause
+  \end{itemize}
+
+  $$fa \otimes (fb \oplus fc) \cong (fa \oplus fb) \oplus fc$$
+  $$fa \cong fa \otimes \eta_{Unit} \cong \eta_{Unit} \otimes fa$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \begin{minted}{scala}
+
+    trait Monoidal[F[_]] {
+      def zip[A, B](fa: F[A], fb: F[B]): F[(A, B)]
+      def pure[A](a: A): F[A]
+
+      /*
+      def map[A, B](fa: F[A])(f: A => B): F[B]
+      */
+    }
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{1.0\textwidth}
+    \begin{minted}{scala}
+
+      (F[A], F[B]) => F[(A, B)]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{0.42\textwidth}
+    \begin{minted}{scala}
+
+      F[A]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing dependent programs}
+
+  \centering
+  \LARGE
+
+  \begin{minipage}{1.0\textwidth}
+    \begin{minted}{scala}
+
+      (F[A], A => F[B]) => F[B]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing dependent programs}
+
+  \begin{minted}{scala}
+
+    def flatMapOption[A, B]
+      (oa: Option[A], f: A => Option[B]): Option[B] =
+
+      oa match {
+        case Some(a) => f(a)
+        case None    => None
+      }
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing dependent programs}
+
+  \begin{minted}{scala}
+
+    def flatMapList[A, B]
+      (la: List[A], f: A => List[B]): List[B] =
+
+      la match {
+        case Nil => Nil
+        case h :: t => f(h) ++ flatMapList(t, f)
+      }
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing dependent programs}
+
+  \begin{minted}{scala}
+
+    def flatMapFunction[A, B, X]
+      (fa: X => A, f: A => (X => B)): X => B =
+
+      (x: X) => f(fa(x))(x)
+
+  \end{minted}
+
+\end{frame}
+
+\newcommand{\kcomp}{>\!=\!>}
+\newcommand{\bind}{>\!\!>\!=}
+
+\begin{frame}
+
+  \frametitle{Composing dependent programs}
+  \Large
+
+  \begin{itemize}
+    \item $F(\rule{1ex}{.4pt})$: type of program \pause
+    \item $(\bind: F(A) \times A \rightarrow F(B)) \rightarrow F(B)$ \pause
+    \item $\eta: A \rightarrow F(A)$ \pause
+  \end{itemize}
+
+  $$(fa \bind f) \bind g = fa \bind (f \kcomp g)$$
+  $$f x = \eta(x) \bind f$$
+  $$fa = fa \bind \eta$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \begin{minted}{scala}
+
+    trait Monad[F[_]] {
+      def flatMap[A, B](fa: F[A], f: A => F[B]): F[B]
+      def pure[A](a: A): F[A]
+    }
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{A nicer monad}
+  \Large
+
+  $$(fa \bind f) \bind g = fa \bind (f \kcomp g)$$
+  $$f x = \eta(x) \bind f$$
+  $$fa = fa \bind \eta$$
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{A nicer monad}
+  \Large
+
+  $$f: A \rightarrow F(B)$$
+  $$g: B \rightarrow F(C)$$
+  $$h: C \rightarrow F(D)$$ \pause
+
+  $$(f \kcomp g) \kcomp h = f \kcomp (g \kcomp h)$$
+  $$f = f \kcomp \eta = \eta \kcomp f$$
+
+\end{frame}
+
+\begin{frame}
+  \centering
+  \LARGE
+
+  \textbf{Category theory}
+  studies the algebra of composition.
+\end{frame}
+
+\end{document}
