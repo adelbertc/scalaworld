@@ -6,18 +6,20 @@
 \usepackage[utf8]{inputenc}
 \usepackage{minted}
 \usepackage{tikz}
+\usepackage{tikz-cd}
 
 \usetikzlibrary{positioning}
 \usetikzlibrary{tikzmark}
 
 \title{Simplicity in Composition}
 \author{Adelbert Chang}
-%\institute{Scala World 2017}
 \date{Scala World 2017}
 
 \logo{\includegraphics[height=1.5cm]{scalaworldlogo.jpg}}
 
 \def\code#1{\texttt{#1}}
+
+\newcommand{\gpause}{\vspace*{-\baselineskip}\pause}
 
 \begin{document}
 
@@ -26,7 +28,7 @@
 \begin{frame}
 
   \frametitle{Composition}
-  \Large
+  \large
 
   \begin{itemize}
     \item $A$: type (set) of values \pause
@@ -34,19 +36,19 @@
     \item $1_{A}$: identity for $\oplus$ \pause
   \end{itemize}
 
-  $$x \oplus (y \oplus z) = (x \oplus y) \oplus z$$
+  $$x \oplus (y \oplus z) = (x \oplus y) \oplus z$$ \gpause
   $$x = x \oplus 1_{A} = 1_{A} \oplus x$$
 
 \end{frame}
 
-\begin{frame} \LARGE $$(\mathbb{Z}, +, 0)$$ \end{frame}
+\begin{frame} \Large $$(\mathbb{Z}, +, 0)$$ \end{frame}
 
-\begin{frame} \LARGE $$(\code{[a]}, +\!\!+, \code{[]})$$ \end{frame}
+\begin{frame} \Large $$(\code{[a]}, +\!\!+, \code{[]})$$ \end{frame}
 
-\begin{frame} \LARGE $$(A \rightarrow A, \circ, a \mapsto a)$$ \end{frame}
+\begin{frame} \Large $$(A \rightarrow A, \circ, a \mapsto a)$$ \end{frame}
 
 \begin{frame}[fragile]
-  \Large
+  \large
 
   \begin{minted}{scala}
 
@@ -205,7 +207,7 @@
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Hierarchy
+%% TODO: Hierarchy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
@@ -229,7 +231,7 @@
 
 \begin{frame}
   \centering
-  \LARGE
+  \Large
 
   \textbf{Associative composition}
   allows for \textcolor{darkred}{modular}
@@ -241,9 +243,9 @@
   \frametitle{Composing programs}
 
   \centering
-  \LARGE
+  \Large
 
-  \begin{minipage}{0.38\textwidth}
+  \begin{minipage}{0.3\textwidth}
     \begin{minted}{scala}
 
       A
@@ -258,9 +260,9 @@
   \frametitle{Composing programs}
 
   \centering
-  \LARGE
+  \Large
 
-  \begin{minipage}{0.42\textwidth}
+  \begin{minipage}{0.36\textwidth}
     \begin{minted}{scala}
 
       F[A]
@@ -275,9 +277,9 @@
   \frametitle{Composing programs}
 
   \centering
-  \LARGE
+  \Large
 
-  \begin{minipage}{0.85\textwidth}
+  \begin{minipage}{0.70\textwidth}
     \begin{minted}{scala}
 
       (F[A], F[A]) => F[A]
@@ -292,9 +294,9 @@
   \frametitle{Composing programs}
 
   \centering
-  \LARGE
+  \Large
 
-  \begin{minipage}{0.85\textwidth}
+  \begin{minipage}{0.70\textwidth}
     \begin{minted}{scala}
 
       (F[A], F[B]) => F[?]
@@ -309,9 +311,9 @@
   \frametitle{Composing programs}
 
   \centering
-  \LARGE
+  \Large
 
-  \begin{minipage}{1.0\textwidth}
+  \begin{minipage}{0.8\textwidth}
     \begin{minted}{scala}
 
       (F[A], F[B]) => F[(A, B)]
@@ -375,7 +377,7 @@
 \begin{frame}[fragile]
 
   \frametitle{Composing programs}
-  \Large
+  \large
 
   \begin{itemize}
     \item $F(\rule{1ex}{.4pt})$: type of program \pause
@@ -383,7 +385,7 @@
     \item $\eta: A \rightarrow F(A)$ \pause
   \end{itemize}
 
-  $$fa \otimes (fb \oplus fc) \cong (fa \oplus fb) \oplus fc$$
+  $$fa \otimes (fb \oplus fc) \cong (fa \oplus fb) \oplus fc$$ \gpause
   $$fa \cong fa \otimes \eta_{Unit} \cong \eta_{Unit} \otimes fa$$
 
 \end{frame}
@@ -410,7 +412,7 @@
   \frametitle{Composing programs}
 
   \centering
-  \LARGE
+  \Large
 
   \begin{minipage}{1.0\textwidth}
     \begin{minted}{scala}
@@ -427,9 +429,9 @@
   \frametitle{Composing programs}
 
   \centering
-  \LARGE
+  \Large
 
-  \begin{minipage}{0.42\textwidth}
+  \begin{minipage}{0.36\textwidth}
     \begin{minted}{scala}
 
       F[A]
@@ -444,9 +446,9 @@
   \frametitle{Composing dependent programs}
 
   \centering
-  \LARGE
+  \Large
 
-  \begin{minipage}{1.0\textwidth}
+  \begin{minipage}{0.82\textwidth}
     \begin{minted}{scala}
 
       (F[A], A => F[B]) => F[B]
@@ -513,17 +515,17 @@
 \begin{frame}
 
   \frametitle{Composing dependent programs}
-  \Large
+  \large
 
   \begin{itemize}
     \item $F(\rule{1ex}{.4pt})$: type of program \pause
-    \item $(\bind: F(A) \times A \rightarrow F(B)) \rightarrow F(B)$ \pause
+    \item $\bind: (F(A) \times A \rightarrow F(B)) \rightarrow F(B)$ \pause
     \item $\eta: A \rightarrow F(A)$ \pause
   \end{itemize}
 
-  $$(fa \bind f) \bind g = fa \bind (f \kcomp g)$$
-  $$f x = \eta(x) \bind f$$
-  $$fa = fa \bind \eta$$
+  $$(fa \bind f) \bind g \ \ = \ \ fa \bind (f \kcomp g)$$ \gpause
+  $$f(x) \ \ = \ \ \eta(x) \bind f$$ \gpause
+  $$fa \ \ = \ \ fa \bind \eta$$
 
 \end{frame}
 
@@ -543,34 +545,353 @@
 \begin{frame}
 
   \frametitle{A nicer monad}
-  \Large
+  \large
 
-  $$(fa \bind f) \bind g = fa \bind (f \kcomp g)$$
-  $$f x = \eta(x) \bind f$$
-  $$fa = fa \bind \eta$$
+  $$(fa \bind f) \bind g \ \ = \ \ fa \bind (f \kcomp g)$$
+  $$f(x) \ \ = \ \ \eta(x) \bind f$$
+  $$fa \ \ = \ \ fa \bind \eta$$
 
 \end{frame}
 
 \begin{frame}
 
   \frametitle{A nicer monad}
-  \Large
+  \large
 
   $$f: A \rightarrow F(B)$$
   $$g: B \rightarrow F(C)$$
   $$h: C \rightarrow F(D)$$ \pause
-
-  $$(f \kcomp g) \kcomp h = f \kcomp (g \kcomp h)$$
-  $$f = f \kcomp \eta = \eta \kcomp f$$
+  $$(f \kcomp g) \kcomp h \ \ = \ \ f \kcomp (g \kcomp h)$$ \gpause
+  $$f \ \ = \ \ f \kcomp \eta \ \ = \ \ \eta \kcomp f$$
 
 \end{frame}
 
 \begin{frame}
   \centering
-  \LARGE
+  \large
 
   \textbf{Category theory}
   studies the algebra of composition.
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory}
+  \Large
+
+  \begin{tikzcd}
+    & B \arrow[dr, "g"] \\
+    A \arrow[ur, "f"] \arrow[rr, "g \circ f"'] && C
+  \end{tikzcd}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Category theory}
+  \large
+
+  \begin{itemize}
+    \item objects: A, B, C ... \pause
+    \item arrows: $f: A \rightarrow B$, $g: B \rightarrow C$ ... \pause
+    \item $1_{A}: A \rightarrow A$ \pause
+  \end{itemize}
+
+  $$(f \circ g) \circ h = f \circ (g \circ h)$$ \gpause
+  $$f = f \circ 1_{A} = 1_{A} \circ f$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monoids}
+  \Large
+
+  \begin{tikzcd}
+    & \bullet \arrow[out=210, in=150, loop, distance=3.0cm, "x"]           % left
+              \arrow[out=120, in=60,  loop, distance=3.0cm, "y"]           % top
+              \arrow[out=30,  in=-30, loop, distance=3.0cm, "x \oplus y"]  % right
+  \end{tikzcd}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monoids}
+  \Large
+
+  \begin{tikzcd}
+    & \bullet \arrow[out=210, in=150, loop, distance=3.0cm, "x"]           % left
+              \arrow[out=120, in=60,  loop, distance=3.0cm, "y"]           % top
+              \arrow[out=30,  in=-30, loop, distance=3.0cm, "x \oplus y"]  % right
+              \arrow[out=300, in=240, loop, distance=3.0cm, "1_{A}"]       % bottom
+  \end{tikzcd}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monads}
+  \Large
+
+  \pause
+
+  \begin{tikzcd}
+    & T(B) \\
+    A \arrow[ur, "f"] \arrow[rr, "? \circ f"'] && T(C)
+  \end{tikzcd}
+
+  \pause
+
+  $$\bind: (F(A) \times A \rightarrow F(B)) \rightarrow F(B)$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monads}
+  \Large
+
+  \begin{tikzcd}
+    & T(B) \\
+    A \arrow[ur, "f"] \arrow[rr, "? \circ f"'] && T(C)
+  \end{tikzcd}
+
+  $$\bind: (A \rightarrow F(B)) \rightarrow F(A) \rightarrow F(B)$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monads}
+  \Large
+
+  \begin{tikzcd}
+    & T(B) \arrow[dr, "g^{*}"] \\
+    A \arrow[ur, "f"] \arrow[rr, "g^{*} \circ f"'] && T(C)
+  \end{tikzcd}
+
+  $$\bind: (A \rightarrow F(B)) \rightarrow F(A) \rightarrow F(B)$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monads}
+  \Large
+
+  \begin{tikzcd}
+    & B \arrow[dr, dashrightarrow, "g'"] \\
+    A \arrow[ur, dashrightarrow, "f'"] \arrow[rr, dashrightarrow, "g' \circ f'"'] && C
+  \end{tikzcd}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monads}
+  \Large
+
+  \begin{tikzcd}
+    & B \arrow[dr, dashrightarrow, "g'"] \arrow[out=120, in=60, loop, dashrightarrow, distance=1.0cm, "1_{B}"] \\
+    A \arrow[ur, dashrightarrow, "f'"] \arrow[rr, dashrightarrow, "g' \circ f'"']
+      \arrow[out=300, in=240, loop, dashrightarrow, distance=1.0cm, "1_{A}"]
+    && C \arrow[out=300, in=240, loop, dashrightarrow, distance=1.0cm, "1_{C}"]
+  \end{tikzcd}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory: monads}
+  \Large
+
+  \begin{tikzcd}
+    & B \arrow[dr, dashrightarrow, "g'"] \arrow[out=120, in=60, loop, dashrightarrow, distance=1.0cm, "B \rightarrow T(B)"] \\
+    A \arrow[ur, dashrightarrow, "f'"] \arrow[rr, dashrightarrow, "g' \circ f'"']
+      \arrow[out=300, in=240, loop, dashrightarrow, distance=1.0cm, "A \rightarrow T(A)"]
+    && C \arrow[out=300, in=240, loop, dashrightarrow, distance=1.0cm, "C \rightarrow T(C)"]
+  \end{tikzcd}
+
+\end{frame}
+
+\begin{frame}
+  \centering
+  \large
+
+  Can we compose the composers?
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \Large
+
+  \begin{minipage}{0.5\textwidth}
+    \begin{minted}{scala}
+
+      (A, A) => A
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.85\textwidth}
+    \begin{minted}{scala}
+
+      (Monoid[A], Monoid[B]) => Monoid[?]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.95\textwidth}
+    \begin{minted}{scala}
+
+      (Monoid[A], Monoid[B]) => Monoid[(A, B)]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \Large
+
+  $$ (x_{1}, y_{1}) \oplus (x_{2}, y_{2}) $$
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \Large
+
+  $$ (x_{1} \oplus x_{2}, y_{1} \oplus y_{2}) $$
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.65\textwidth}
+    \begin{minted}{scala}
+
+      (F[A], F[B]) => F[(A, B)]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{9.95\textwidth}
+    \begin{minted}{scala}
+
+      (Monoidal[F], Monoidal[G]) => Monoidal[?]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.95\textwidth}
+    \begin{minted}{scala}
+
+      type L[X] = (F[X], G[X])
+      (Monoidal[F], Monoidal[G]) => Monoidal[L]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.80\textwidth}
+    \begin{minted}{scala}
+
+      type L[X] = (F[X], G[X])
+      (Monad[F], Monad[G]) => Monad[L]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.95\textwidth}
+    \begin{minted}{scala}
+
+      type L[X] = F[G[X]]
+      (Monoidal[F], Monoidal[G]) => Monoidal[L]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.75\textwidth}
+    \begin{minted}{scala}
+
+      type L[X] = F[G[X]]
+      (Monad[F], Monad[G]) => Monad[L]
+
+    \end{minted}
+  \end{minipage}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \centering
+  \large
+
+  \begin{minipage}{0.75\textwidth}
+    \begin{minted}{scala}
+
+      type L[X] = F[G[X]]
+      (Monad[F], Monad[G]) => Monad[L] % TODO: Cross out
+
+    \end{minted}
+  \end{minipage}
+
 \end{frame}
 
 \end{document}
