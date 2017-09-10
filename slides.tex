@@ -2,6 +2,7 @@
 
 \usetheme{Boadilla}
 
+\usepackage{cancel}
 \usepackage{color}
 \usepackage[utf8]{inputenc}
 \usepackage{minted}
@@ -225,8 +226,8 @@
     every node/.style={text centered, minimum height=2em, node distance=0.5cm}
   ]
 
-    \node [cell, text width=8.7cm] (n1) [above=of n2] {36};
-    \node [cell, text width=4.1cm] (n2) {10};
+    \node [cell, text width=8.7cm] (n1) {36};
+    \node [cell, text width=4.1cm] (n2) [below=of n1] {10};
     \node [cell, text width=4.1cm] (n3) [right=of n2] {26};
 
 
@@ -753,22 +754,21 @@ F[A]
 
 \end{frame}
 
-\begin{frame}[fragile]
-
-  \Large
-
-  $$ (x_{1}, y_{1}) \oplus (x_{2}, y_{2}) $$
-
-\end{frame}
-
-\begin{frame}[fragile]
-
-  \centering
-  \Large
-
-  $$ (x_{1} \oplus x_{2}, y_{1} \oplus y_{2}) $$
-
-\end{frame}
+%\begin{frame}[fragile]
+%
+%  \Large
+%
+%  $$ (x_{1}, y_{1}) \oplus (x_{2}, y_{2}) $$
+%
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%
+%  \Large
+%
+%  $$ (x_{1} \oplus x_{2}, y_{1} \oplus y_{2}) $$
+%
+%\end{frame}
 
 \begin{frame}[fragile]
 
@@ -860,9 +860,13 @@ type L[X] = F[G[X]]
   \begin{cminted}{scala}
 
 type L[X] = F[G[X]]
-(Monad[F], Monad[G]) => Monad[L] % TODO: Cross out
+(Monad[F], Monad[G]) => Monad[L]
 
   \end{cminted}
+  \begin{tikzpicture}[overlay]
+    \draw[red, very thick] (-8, 1) -- (1, -0.5);
+    \draw[red, very thick] (-8, -0.5) -- (1, 1);
+  \end{tikzpicture}
 
 \end{frame}
 
