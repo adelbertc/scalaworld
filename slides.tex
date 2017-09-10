@@ -11,6 +11,13 @@
 \usetikzlibrary{positioning}
 \usetikzlibrary{tikzmark}
 
+% Shady minted centering stuff
+% https://tex.stackexchange.com/questions/161124/how-to-make-a-minted-code-listing-centered-on-a-page
+\usepackage{xpatch,letltxmacro}
+\LetLtxMacro{\cminted}{\minted}
+\let\endcminted\endminted
+\xpretocmd{\cminted}{\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}}{}{}
+
 \title{Simplicity in Composition}
 \author{Adelbert Chang}
 \date{Scala World 2017}
@@ -49,15 +56,16 @@
 
 \begin{frame}[fragile]
   \large
+  \centering
 
-  \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-    trait Monoid[A] {
-      def combine(x: A, y: A): A
-      def empty: A
-    }
+ trait Monoid[A] {
+   def combine(x: A, y: A): A
+   def empty: A
+ }
 
-  \end{minted}
+  \end{cminted}
 
 \end{frame}
 
@@ -245,13 +253,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.3\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      A
+A
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -262,13 +268,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.36\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      F[A]
+F[A]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -279,13 +283,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.70\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (F[A], F[A]) => F[A]
+(F[A], F[A]) => F[A]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -296,13 +298,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.70\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (F[A], F[B]) => F[?]
+(F[A], F[B]) => F[?]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -313,13 +313,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.8\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (F[A], F[B]) => F[(A, B)]
+(F[A], F[B]) => F[(A, B)]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -414,13 +412,11 @@
   \centering
   \Large
 
-  \begin{minipage}{1.0\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (F[A], F[B]) => F[(A, B)]
+(F[A], F[B]) => F[(A, B)]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -431,13 +427,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.36\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      F[A]
+F[A]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -448,13 +442,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.82\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (F[A], A => F[B]) => F[B]
+(F[A], A => F[B]) => F[B]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -727,13 +719,11 @@
   \centering
   \Large
 
-  \begin{minipage}{0.5\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (A, A) => A
+(A, A) => A
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -742,13 +732,11 @@
   \centering
   \large
 
-  \begin{minipage}{0.85\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (Monoid[A], Monoid[B]) => Monoid[?]
+(Monoid[A], Monoid[B]) => Monoid[?]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -757,13 +745,11 @@
   \centering
   \large
 
-  \begin{minipage}{0.95\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (Monoid[A], Monoid[B]) => Monoid[(A, B)]
+(Monoid[A], Monoid[B]) => Monoid[(A, B)]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -789,13 +775,11 @@
   \centering
   \large
 
-  \begin{minipage}{0.65\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (F[A], F[B]) => F[(A, B)]
+(F[A], F[B]) => F[(A, B)]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -804,13 +788,11 @@
   \centering
   \large
 
-  \begin{minipage}{9.95\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      (Monoidal[F], Monoidal[G]) => Monoidal[?]
+(Monoidal[F], Monoidal[G]) => Monoidal[?]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -819,14 +801,12 @@
   \centering
   \large
 
-  \begin{minipage}{0.95\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      type L[X] = (F[X], G[X])
-      (Monoidal[F], Monoidal[G]) => Monoidal[L]
+type L[X] = (F[X], G[X])
+(Monoidal[F], Monoidal[G]) => Monoidal[L]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -835,14 +815,12 @@
   \centering
   \large
 
-  \begin{minipage}{0.80\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      type L[X] = (F[X], G[X])
-      (Monad[F], Monad[G]) => Monad[L]
+type L[X] = (F[X], G[X])
+(Monad[F], Monad[G]) => Monad[L]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -851,14 +829,12 @@
   \centering
   \large
 
-  \begin{minipage}{0.95\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      type L[X] = F[G[X]]
-      (Monoidal[F], Monoidal[G]) => Monoidal[L]
+type L[X] = F[G[X]]
+(Monoidal[F], Monoidal[G]) => Monoidal[L]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -867,14 +843,12 @@
   \centering
   \large
 
-  \begin{minipage}{0.75\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      type L[X] = F[G[X]]
-      (Monad[F], Monad[G]) => Monad[L]
+type L[X] = F[G[X]]
+(Monad[F], Monad[G]) => Monad[L]
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
@@ -883,14 +857,12 @@
   \centering
   \large
 
-  \begin{minipage}{0.75\textwidth}
-    \begin{minted}{scala}
+  \begin{cminted}{scala}
 
-      type L[X] = F[G[X]]
-      (Monad[F], Monad[G]) => Monad[L] % TODO: Cross out
+type L[X] = F[G[X]]
+(Monad[F], Monad[G]) => Monad[L] % TODO: Cross out
 
-    \end{minted}
-  \end{minipage}
+  \end{cminted}
 
 \end{frame}
 
