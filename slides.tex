@@ -11,6 +11,7 @@
 
 \usetikzlibrary{positioning}
 \usetikzlibrary{tikzmark}
+\usetikzlibrary{fit, matrix, shapes.geometric}
 
 % Shady minted centering stuff
 % https://tex.stackexchange.com/questions/161124/how-to-make-a-minted-code-listing-centered-on-a-page
@@ -70,83 +71,102 @@
 
 \end{frame}
 
-\tikzstyle{cell} = [rectangle, rounded corners=5pt, thick, draw, text width=0.65cm ]
+\tikzset{cell/.style={rectangle, rounded corners=5pt, thick, draw}}
+
+\tikzset{ng/.style = {
+   matrix of nodes, nodes in empty cells,
+   minimum width=1.25cm,
+   column sep=4pt,
+   row sep=10pt,
+   text height=2ex,text depth=.25ex,
+   minimum height=4ex
+}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Folding down list
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell] (n1) {1};
-    \foreach \i in {2,...,8}
-      \pgfmathtruncatemacro{\prev}{\i - 1}
-      \node [cell] (n\i) [right=of n\prev] {\i};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-1), inner sep=0pt, label=center: 1] {};
+    \node[cell, fit=(m-1-2)(m-1-2), inner sep=0pt, label=center: 2] {};
+    \node[cell, fit=(m-1-3)(m-1-3), inner sep=0pt, label=center: 3] {};
+    \node[cell, fit=(m-1-4)(m-1-4), inner sep=0pt, label=center: 4] {};
+    \node[cell, fit=(m-1-5)(m-1-5), inner sep=0pt, label=center: 5] {};
+    \node[cell, fit=(m-1-6)(m-1-6), inner sep=0pt, label=center: 6] {};
+    \node[cell, fit=(m-1-7)(m-1-7), inner sep=0pt, label=center: 7] {};
+    \node[cell, fit=(m-1-8)(m-1-8), inner sep=0pt, label=center: 8] {};
 
   \end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
-    \node [cell, text width=1.8cm] (n2) {3};
-    \foreach \i in {3,...,8}
-      \pgfmathtruncatemacro{\prev}{\i - 1}
-      \node [cell] (n\i) [right=of n\prev] {\i};
+  \begin{tikzpicture}
+
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-2), inner sep=0pt, label=center: 3] {};
+    \node[cell, fit=(m-1-3)(m-1-3), inner sep=0pt, label=center: 3] {};
+    \node[cell, fit=(m-1-4)(m-1-4), inner sep=0pt, label=center: 4] {};
+    \node[cell, fit=(m-1-5)(m-1-5), inner sep=0pt, label=center: 5] {};
+    \node[cell, fit=(m-1-6)(m-1-6), inner sep=0pt, label=center: 6] {};
+    \node[cell, fit=(m-1-7)(m-1-7), inner sep=0pt, label=center: 7] {};
+    \node[cell, fit=(m-1-8)(m-1-8), inner sep=0pt, label=center: 8] {};
 
   \end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell, text width=2.95cm] (n3) {6};
-    \foreach \i in {4,...,8}
-      \pgfmathtruncatemacro{\prev}{\i - 1}
-      \node [cell] (n\i) [right=of n\prev] {\i};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-3), inner sep=0pt, label=center: 6] {};
+    \node[cell, fit=(m-1-4)(m-1-4), inner sep=0pt, label=center: 4] {};
+    \node[cell, fit=(m-1-5)(m-1-5), inner sep=0pt, label=center: 5] {};
+    \node[cell, fit=(m-1-6)(m-1-6), inner sep=0pt, label=center: 6] {};
+    \node[cell, fit=(m-1-7)(m-1-7), inner sep=0pt, label=center: 7] {};
+    \node[cell, fit=(m-1-8)(m-1-8), inner sep=0pt, label=center: 8] {};
 
   \end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell, text width=5.95cm] (n5) {15};
-    \foreach \i in {6,...,8}
-      \pgfmathtruncatemacro{\prev}{\i - 1}
-      \node [cell] (n\i) [right=of n\prev] {\i};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-5), inner sep=0pt, label=center: 15] {};
+    \node[cell, fit=(m-1-6)(m-1-6), inner sep=0pt, label=center: 6]  {};
+    \node[cell, fit=(m-1-7)(m-1-7), inner sep=0pt, label=center: 7]  {};
+    \node[cell, fit=(m-1-8)(m-1-8), inner sep=0pt, label=center: 8]  {};
 
   \end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell, text width=8.7cm] (n5) {36};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-8), inner sep=0pt, label=center: 36] {};
 
   \end{tikzpicture}
 
@@ -156,80 +176,104 @@
 %% Parallel folding
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell] (n1) {1};
-    \foreach \i in {2,...,8}
-      \pgfmathtruncatemacro{\prev}{\i - 1}
-      \node [cell] (n\i) [right=of n\prev] {\i};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-1), inner sep=0pt, label=center: 1]  {};
+    \node[cell, fit=(m-1-2)(m-1-2), inner sep=0pt, label=center: 2]  {};
+    \node[cell, fit=(m-1-3)(m-1-3), inner sep=0pt, label=center: 3]  {};
+    \node[cell, fit=(m-1-4)(m-1-4), inner sep=0pt, label=center: 4]  {};
+    \node[cell, fit=(m-1-5)(m-1-5), inner sep=0pt, label=center: 5]  {};
+    \node[cell, fit=(m-1-6)(m-1-6), inner sep=0pt, label=center: 6]  {};
+    \node[cell, fit=(m-1-7)(m-1-7), inner sep=0pt, label=center: 7]  {};
+    \node[cell, fit=(m-1-8)(m-1-8), inner sep=0pt, label=center: 8]  {};
 
   \end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell, text width=1.8cm] (n1) {3};
-    \node [cell, text width=1.8cm] (n2) [right=of n1] {7};
-    \node [cell, text width=1.8cm] (n3) [right=of n2] {11};
-    \node [cell, text width=1.8cm] (n4) [right=of n3] {15};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-2), inner sep=0pt, label=center: 3]  {};
+    \node[cell, fit=(m-1-3)(m-1-4), inner sep=0pt, label=center: 7]  {};
+    \node[cell, fit=(m-1-5)(m-1-6), inner sep=0pt, label=center: 11] {};
+    \node[cell, fit=(m-1-7)(m-1-8), inner sep=0pt, label=center: 15] {};
 
   \end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell, text width=4.1cm] (n1) {10};
-    \node [cell, text width=4.1cm] (n2) [right=of n1] {26};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-4), inner sep=0pt, label=center: 10] {};
+    \node[cell, fit=(m-1-5)(m-1-8), inner sep=0pt, label=center: 26] {};
 
   \end{tikzpicture}
 
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell, text width=8.7cm] (n1) {36};
+    \matrix[ng] (m) { & & & & & & & \\ } ;
+
+    \node[cell, fit=(m-1-1)(m-1-8), inner sep=0pt, label=center: 36] {};
 
   \end{tikzpicture}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% TODO: Hierarchy
+%% Hierarchy
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}
+\begin{frame}[fragile]
   \centering
 
-  \begin{tikzpicture}[
-    every node/.style={text centered, minimum height=2em, node distance=0.5cm}
-  ]
+  \begin{tikzpicture}
 
-    \node [cell, text width=8.7cm] (n1) {36};
-    \node [cell, text width=4.1cm] (n2) [below=of n1] {10};
-    \node [cell, text width=4.1cm] (n3) [right=of n2] {26};
+    \matrix[ng] (m) {
+      & & & & & & & \\
+      & & & & & & & \\
+      & & & & & & & \\
+      & & & & & & & \\
+    } ;
 
+    \node[cell, fit=(m-4-1)(m-4-1), inner sep=0pt, label=center: 1]  {};
+    \node[cell, fit=(m-4-2)(m-4-2), inner sep=0pt, label=center: 2]  {};
+    \node[cell, fit=(m-4-3)(m-4-3), inner sep=0pt, label=center: 3]  {};
+    \node[cell, fit=(m-4-4)(m-4-4), inner sep=0pt, label=center: 4]  {};
+    \node[cell, fit=(m-4-5)(m-4-5), inner sep=0pt, label=center: 5]  {};
+    \node[cell, fit=(m-4-6)(m-4-6), inner sep=0pt, label=center: 6]  {};
+    \node[cell, fit=(m-4-7)(m-4-7), inner sep=0pt, label=center: 7]  {};
+    \node[cell, fit=(m-4-8)(m-4-8), inner sep=0pt, label=center: 8]  {};
+
+    \node[cell, fit=(m-3-1)(m-3-2), inner sep=0pt, label=center: 3]  {};
+    \node[cell, fit=(m-3-3)(m-3-4), inner sep=0pt, label=center: 7]  {};
+    \node[cell, fit=(m-3-5)(m-3-6), inner sep=0pt, label=center: 11] {};
+    \node[cell, fit=(m-3-7)(m-3-8), inner sep=0pt, label=center: 15] {};
+
+
+    \node[cell, fit=(m-2-1)(m-2-4), inner sep=0pt, label=center: 10] {};
+    \node[cell, fit=(m-2-5)(m-2-8), inner sep=0pt, label=center: 26] {};
+
+    \node[cell, fit=(m-1-1)(m-1-8), inner sep=0pt, label=center: 36] {};
 
   \end{tikzpicture}
 
@@ -556,6 +600,88 @@ F[A]
   $$h: C \rightarrow F(D)$$ \pause
   $$(f \kcomp g) \kcomp h \ \ = \ \ f \kcomp (g \kcomp h)$$ \gpause
   $$f \ \ = \ \ f \kcomp \eta \ \ = \ \ \eta \kcomp f$$
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Hierarchy 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+  \centering
+
+  \begin{tikzpicture}
+
+    \matrix[ng] (m) {
+      & & & & & & & \\
+      & & & & & & & \\
+      & & & & & & & \\
+    } ;
+
+    \node[cell, fit=(m-3-1)(m-3-2), inner sep=0pt, label=center: 3]  {};
+    \node[cell, fit=(m-3-3)(m-3-4), inner sep=0pt, label=center: 7]  {};
+    \node[cell, fit=(m-3-5)(m-3-6), inner sep=0pt, label=center: 11] {};
+    \node[cell, fit=(m-3-7)(m-3-8), inner sep=0pt, label=center: 15] {};
+
+
+    \node[cell, fit=(m-2-1)(m-2-4), inner sep=0pt, label=center: 10] {};
+    \node[cell, fit=(m-2-5)(m-2-8), inner sep=0pt, label=center: 26] {};
+
+    \node[cell, fit=(m-1-1)(m-1-8), inner sep=0pt, label=center: 36] {};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+
+  \begin{tikzpicture}
+
+    \matrix[ng] (m) {
+      & & & & & & & \\
+      & & & & & & & \\
+      & & & & & & & \\
+    } ;
+
+    \node[cell, fit=(m-3-1)(m-3-2), inner sep=0pt, label=center: A]  {};
+    \node[cell, fit=(m-3-3)(m-3-4), inner sep=0pt, label=center: B]  {};
+    \node[cell, fit=(m-3-5)(m-3-6), inner sep=0pt, label=center: C] {};
+    \node[cell, fit=(m-3-7)(m-3-8), inner sep=0pt, label=center: D] {};
+
+
+    \node[cell, fit=(m-2-1)(m-2-4), inner sep=0pt, label=center: X] {};
+    \node[cell, fit=(m-2-5)(m-2-8), inner sep=0pt, label=center: Y] {};
+
+    \node[cell, fit=(m-1-1)(m-1-8), inner sep=0pt, label=center: Z] {};
+
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+
+  \begin{tikzpicture}
+
+    \matrix[ng] (m) {
+      & & & & & & & \\
+      & & & & & & & \\
+      & & & & & & & \\
+    } ;
+
+    \node[cell, fit=(m-3-1)(m-3-2), inner sep=0pt, label=center: User info]  {};
+    \node[cell, fit=(m-3-3)(m-3-4), inner sep=0pt, label=center: Friends]  {};
+    \node[cell, fit=(m-3-5)(m-3-6), inner sep=0pt, label=center: Cookies] {};
+    \node[cell, fit=(m-3-7)(m-3-8), inner sep=0pt, label=center: Logs] {};
+
+
+    \node[cell, fit=(m-2-1)(m-2-4), inner sep=0pt, label=center: Profile] {};
+    \node[cell, fit=(m-2-5)(m-2-8), inner sep=0pt, label=center: Recommendations] {};
+
+    \node[cell, fit=(m-1-1)(m-1-8), inner sep=0pt, label=center: News feed] {};
+
+  \end{tikzpicture}
 
 \end{frame}
 
