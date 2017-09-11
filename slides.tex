@@ -2,20 +2,22 @@
 
 \usetheme{Boadilla}
 
-\usepackage{cancel}
-\usepackage{color}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage[utf8]{inputenc}
 \usepackage{minted}
 \usepackage{tikz}
-\usepackage{tikz-cd}
 
-\usetikzlibrary{positioning}
-\usetikzlibrary{tikzmark}
-\usetikzlibrary{fit, matrix, shapes.geometric}
+\usetikzlibrary{cd}
+\usetikzlibrary{fit}
+\usetikzlibrary{matrix}
 
 % Shady minted centering stuff
 % https://tex.stackexchange.com/questions/161124/how-to-make-a-minted-code-listing-centered-on-a-page
-\usepackage{xpatch,letltxmacro}
+\usepackage{letltxmacro}
+\usepackage{xpatch}
 \LetLtxMacro{\cminted}{\minted}
 \let\endcminted\endminted
 \xpretocmd{\cminted}{\RecustomVerbatimEnvironment{Verbatim}{BVerbatim}{}}{}{}
@@ -26,9 +28,42 @@
 
 \logo{\includegraphics[height=1.5cm]{scalaworldlogo.jpg}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom stuff
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \code gives monospace text
 \def\code#1{\texttt{#1}}
 
+\definecolor{darkred}{RGB}{181, 23, 0}
+
+\definecolor{darkblue}{RGB}{0,118,186}
+
+% \gpause is \pause minus the weird added vertical space
 \newcommand{\gpause}{\vspace*{-\baselineskip}\pause}
+
+% \bind is >>+
+\newcommand{\bind}{>\!\!>\!=}
+
+% \kcomp is >=>
+\newcommand{\kcomp}{>\!=\!>}
+
+\setbeamerfont{footnote}{size=\tiny}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Tikz styling
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tikzset{cell/.style={rectangle, rounded corners=5pt, thick, draw}}
+
+\tikzset{ng/.style = {
+   matrix of nodes, nodes in empty cells,
+   minimum width=1.25cm,
+   column sep=4pt,
+   row sep=10pt,
+   text height=2ex,text depth=.25ex,
+   minimum height=4ex
+}}
 
 \begin{document}
 
@@ -45,7 +80,7 @@
     \item $1_{A}$: identity for $\oplus$ \pause
   \end{itemize}
 
-  $$x \oplus (y \oplus z) = (x \oplus y) \oplus z$$ \gpause
+  $$(x \oplus y) \oplus z = x \oplus (y \oplus z)$$ \gpause
   $$x = x \oplus 1_{A} = 1_{A} \oplus x$$
 
 \end{frame}
@@ -70,17 +105,6 @@
   \end{cminted}
 
 \end{frame}
-
-\tikzset{cell/.style={rectangle, rounded corners=5pt, thick, draw}}
-
-\tikzset{ng/.style = {
-   matrix of nodes, nodes in empty cells,
-   minimum width=1.25cm,
-   column sep=4pt,
-   row sep=10pt,
-   text height=2ex,text depth=.25ex,
-   minimum height=4ex
-}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Folding down list
@@ -279,9 +303,6 @@
 
 \end{frame}
 
-\definecolor{darkred}{RGB}{181, 23, 0}
-\definecolor{darkblue}{RGB}{0,118,186}
-
 \begin{frame}
   \centering
   \Large
@@ -290,6 +311,10 @@
   allows for \textcolor{darkred}{modular}
   \textcolor{darkblue}{decomposition} and \textcolor{darkblue}{reasoning}.
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Composing programs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile]
 
@@ -419,22 +444,6 @@ F[A]
 
 \begin{frame}[fragile]
 
-  \frametitle{Composing programs}
-  \large
-
-  \begin{itemize}
-    \item $F(\rule{1ex}{.4pt})$: type of program \pause
-    \item $\otimes: F(A) \times F(B) \rightarrow F((A, B))$ \pause
-    \item $\eta: A \rightarrow F(A)$ \pause
-  \end{itemize}
-
-  $$fa \otimes (fb \oplus fc) \cong (fa \oplus fb) \oplus fc$$ \gpause
-  $$fa \cong fa \otimes \eta_{Unit} \cong \eta_{Unit} \otimes fa$$
-
-\end{frame}
-
-\begin{frame}[fragile]
-
   \begin{minted}{scala}
 
     trait Monoidal[F[_]] {
@@ -453,6 +462,37 @@ F[A]
 \begin{frame}[fragile]
 
   \frametitle{Composing programs}
+  \large
+
+  \begin{itemize}
+    \item $F(\rule{1ex}{.4pt})$: type of program \pause
+    \item $\otimes: F(A) \times F(B) \rightarrow F((A, B))$ \pause
+    \item $\eta: A \rightarrow F(A)$ \pause
+  \end{itemize}
+
+  $$(fa \otimes fb) \times fc \cong fa \times (fb \otimes fc)$$ \gpause
+  $$fa \cong fa \otimes \eta_{Unit} \cong \eta_{Unit} \otimes fa$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing programs}
+
+  \centering
+  \Large
+
+  \begin{cminted}{scala}
+
+(F[A], F[B]) => F[(A, B)]
+
+  \end{cminted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Composing independent programs}
 
   \centering
   \Large
@@ -479,6 +519,10 @@ F[A]
   \end{cminted}
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Composing dependent programs
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile]
 
@@ -546,8 +590,31 @@ F[A]
 
 \end{frame}
 
-\newcommand{\kcomp}{>\!=\!>}
-\newcommand{\bind}{>\!\!>\!=}
+\begin{frame}[fragile]
+
+  \begin{minted}{scala}
+
+    trait Monad[F[_]] {
+      def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+      def pure[A](a: A): F[A]
+    }
+
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \begin{minted}{scala}
+
+    trait Monad[F[_]] extends Monoidal[F] {
+      def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B]
+      def pure[A](a: A): F[A]
+    }
+
+  \end{minted}
+
+\end{frame}
 
 \begin{frame}
 
@@ -560,33 +627,11 @@ F[A]
     \item $\eta: A \rightarrow F(A)$ \pause
   \end{itemize}
 
-  $$(fa \bind f) \bind g \ \ = \ \ fa \bind (f \kcomp g)$$ \gpause
+  $$(fa \bind f) \bind g \ \ = \ \ fa \bind (f \kcomp g)\footnotemark$$ \gpause
   $$f(x) \ \ = \ \ \eta(x) \bind f$$ \gpause
   $$fa \ \ = \ \ fa \bind \eta$$
 
-\end{frame}
-
-\begin{frame}[fragile]
-
-  \begin{minted}{scala}
-
-    trait Monad[F[_]] {
-      def flatMap[A, B](fa: F[A], f: A => F[B]): F[B]
-      def pure[A](a: A): F[A]
-    }
-
-  \end{minted}
-
-\end{frame}
-
-\begin{frame}
-
-  \frametitle{A nicer monad}
-  \large
-
-  $$(fa \bind f) \bind g \ \ = \ \ fa \bind (f \kcomp g)$$
-  $$f(x) \ \ = \ \ \eta(x) \bind f$$
-  $$fa \ \ = \ \ fa \bind \eta$$
+  \footnotetext[1]{$\kcomp: (A \rightarrow F(B) \times B \rightarrow F(C)) \rightarrow A \rightarrow F(C)$}
 
 \end{frame}
 
@@ -685,24 +730,16 @@ F[A]
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Category theory
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{frame}
   \centering
   \large
 
   \textbf{Category theory}
   studies the algebra of composition.
-\end{frame}
-
-\begin{frame}[fragile]
-  \centering
-  \frametitle{Category theory}
-  \Large
-
-  \begin{tikzcd}
-    & B \arrow[dr, "g"] \\
-    A \arrow[ur, "f"] \arrow[rr, "g \circ f"'] && C
-  \end{tikzcd}
-
 \end{frame}
 
 \begin{frame}
@@ -718,6 +755,18 @@ F[A]
 
   $$(f \circ g) \circ h = f \circ (g \circ h)$$ \gpause
   $$f = f \circ 1_{A} = 1_{A} \circ f$$
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering
+  \frametitle{Category theory}
+  \Large
+
+  \begin{tikzcd}
+    & B \arrow[dr, "g"] \\
+    A \arrow[ur, "f"] \arrow[rr, "g \circ f"'] && C
+  \end{tikzcd}
 
 \end{frame}
 
@@ -756,8 +805,8 @@ F[A]
   \pause
 
   \begin{tikzcd}
-    & T(B) \\
-    A \arrow[ur, "f"] \arrow[rr, "? \circ f"'] && T(C)
+    & F(B) \\
+    A \arrow[ur, "f"] \arrow[rr, "? \circ f"'] && F(C)
   \end{tikzcd}
 
   \pause
@@ -772,8 +821,8 @@ F[A]
   \Large
 
   \begin{tikzcd}
-    & T(B) \\
-    A \arrow[ur, "f"] \arrow[rr, "? \circ f"'] && T(C)
+    & F(B) \\
+    A \arrow[ur, "f"] \arrow[rr, "? \circ f"'] && F(C)
   \end{tikzcd}
 
   $$\bind: (A \rightarrow F(B)) \rightarrow F(A) \rightarrow F(B)$$
@@ -786,8 +835,8 @@ F[A]
   \Large
 
   \begin{tikzcd}
-    & T(B) \arrow[dr, "g^{*}"] \\
-    A \arrow[ur, "f"] \arrow[rr, "g^{*} \circ f"'] && T(C)
+    & F(B) \arrow[dr, "g^{*}"] \\
+    A \arrow[ur, "f"] \arrow[rr, "g^{*} \circ f"'] && F(C)
   \end{tikzcd}
 
   $$\bind: (A \rightarrow F(B)) \rightarrow F(A) \rightarrow F(B)$$
@@ -830,9 +879,15 @@ F[A]
     A \arrow[ur, dashrightarrow, "f'"] \arrow[rr, dashrightarrow, "g' \circ f'"']
       \arrow[out=300, in=240, loop, dashrightarrow, distance=1.0cm, "A \rightarrow T(A)"]
     && C \arrow[out=300, in=240, loop, dashrightarrow, distance=1.0cm, "C \rightarrow T(C)"]
-  \end{tikzcd}
+  \end{tikzcd} \pause
+
+  $$\eta: A \rightarrow F(A)$$
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Compose composers
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
   \centering
@@ -869,6 +924,7 @@ F[A]
 
 \begin{frame}[fragile]
 
+  \frametitle{Product composition: monoids}
   \centering
   \large
 
@@ -880,21 +936,27 @@ F[A]
 
 \end{frame}
 
-%\begin{frame}[fragile]
-%
-%  \Large
-%
-%  $$ (x_{1}, y_{1}) \oplus (x_{2}, y_{2}) $$
-%
-%\end{frame}
-%
-%\begin{frame}[fragile]
-%
-%  \Large
-%
-%  $$ (x_{1} \oplus x_{2}, y_{1} \oplus y_{2}) $$
-%
-%\end{frame}
+\begin{frame}[fragile]
+
+  \frametitle{Product composition: monoids}
+  \footnotetext{Assuming \code{Monoid[A]} and \code{Monoid[B]}}
+
+  \begin{minted}{scala}
+def append(x: (A, B), y: (A, B)): (A, B) = {
+  val a = x._1 append y._1
+  val b = x._2 append y._2
+
+  (a, b)
+}
+  \end{minted}
+
+  \pause
+
+  \begin{minted}{scala}
+def empty: (A, B) = (Monoid[A].empty, Monoid[B].empty)
+  \end{minted}
+
+\end{frame}
 
 \begin{frame}[fragile]
 
@@ -924,6 +986,7 @@ F[A]
 
 \begin{frame}[fragile]
 
+  \frametitle{Product composition: lax monoidal functors}
   \centering
   \large
 
@@ -938,6 +1001,32 @@ type L[X] = (F[X], G[X])
 
 \begin{frame}[fragile]
 
+  \frametitle{Product composition: lax monoidal functors}
+  \footnotetext{Assuming \code{Monoidal[F]} and \code{Monoidal[G]}}
+
+  \begin{minted}{scala}
+def zip[A, B](x: (F[A], G[A]),
+              y: (F[B], G[B])): (F[(A, B)], G[(A, B)]) = {
+
+  val f = x._1 zip y._1
+  val g = x._2 zip y._2
+
+  (f, g)
+}
+  \end{minted}
+
+  \pause
+
+  \begin{minted}{scala}
+def pure[A](a: A): (F[A], G[A]) =
+  (Monoidal[F].pure(a), Monoidal[G].pure(a))
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Product composition: monads}
   \centering
   \large
 
@@ -952,6 +1041,26 @@ type L[X] = (F[X], G[X])
 
 \begin{frame}[fragile]
 
+  \frametitle{Product composition: monads}
+  \footnotetext{Assuming \code{Monad[F]} and \code{Monad[G]}}
+
+  \begin{minted}{scala}
+def flatMap[A, B]
+  (xa: (F[A], G[A]))(ff: A => (F[B], G[B])):
+    (F[(A, B)], G[(A, B)]) = {
+
+  val f = xa._1.flatMap(a => ff(a)._1)
+  val g = xa._2.flatMap(a => ff(a)._2)
+
+  (f, g)
+}
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Nested composition: lax monoidal functors}
   \centering
   \large
 
@@ -966,6 +1075,28 @@ type L[X] = F[G[X]]
 
 \begin{frame}[fragile]
 
+  \frametitle{Nested composition: lax monoidal functors}
+  \footnotetext{Assuming \code{Monoidal[F]} and \code{Monoidal[G]}}
+
+  \begin{minted}{scala}
+def zip[A, B](fga: F[G[A]], fgb: F[G[B]]): F[G[(A, B)]] = {
+  val fp: F[(G[A], G[B])] = fga zip fgb
+  fp.map { case (ga, gb) => ga zip gb }
+}
+  \end{minted}
+
+  \pause
+
+  \begin{minted}{scala}
+def pure[A](a: A): F[G[A]] =
+  Monoidal[F].pure(Monoidal[G].pure(a))
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Nested composition: monads}
   \centering
   \large
 
@@ -980,6 +1111,7 @@ type L[X] = F[G[X]]
 
 \begin{frame}[fragile]
 
+  \frametitle{Nested composition: monads}
   \centering
   \large
 
@@ -993,6 +1125,58 @@ type L[X] = F[G[X]]
     \draw[red, very thick] (-8, 1) -- (1, -0.5);
     \draw[red, very thick] (-8, -0.5) -- (1, 1);
   \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Nested composition: monads}
+  \footnotetext{Assuming \code{Monad[F]} and \code{Monad[G]}}
+
+  \begin{minted}{scala}
+def flatMap[A, B](fga: F[G[A]](f: A => F[G[B]]): F[G[B]] =
+  \end{minted}
+
+  \pause
+
+  \begin{minted}{scala}
+  fga.flatMap { (ga: G[A]) =>
+    ???
+  }
+  \end{minted}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Review}
+  \large
+
+  \begin{itemize}
+    \item Associative composition allows for modular decomposition and reasoning \pause
+    \item Monoids compose A's, lax monoidal functors compose independent F[A]'s, monads compose dependent F[A]'s \pause
+    \item Monoids can be composed \pause
+    \item Lax monoidal functors can be composed \pause
+    \item Monads in general cannot be composed
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{References}
+
+  \begin{itemize}
+    \item Equational reasoning at scale - Gabriel Gonzalez
+      \url{http://www.haskellforall.com/2014/07/equational-reasoning-at-scale.html}
+    \item Invariant Shadows - Michael Pilquist
+      \url{http://mpilquist.github.io/blog/2015/06/22/invariant-shadows-part-2/}
+    \item All About Applicative - Me!
+      \url{https://www.youtube.com/watch?v=Mn7BtPALFys}
+    \item A Categorial View of Computational Effects - Prof. Emily Riehl
+      \url{https://www.youtube.com/watch?v=6t6bsWVOIzs}
+    \item Conceptual Mathematics - F. William Lawvere and Stephen H. Schanuel
+  \end{itemize}
 
 \end{frame}
 
